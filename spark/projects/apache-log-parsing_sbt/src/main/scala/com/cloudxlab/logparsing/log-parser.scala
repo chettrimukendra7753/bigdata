@@ -72,12 +72,19 @@ nsaLogDF2.createOrReplaceTempView("nasa_log")
 val output = spark.sql("select * from nasa_log")
 spark.sql("cache TABLE nasa_log")
 
-
+println("Problem 1:Top 10 requested URLs along with a count of the number of times they have been requested:")
 spark.sql("select url,count(*) as req_cnt from nasa_log where url like '%HTML%' group by url order by req_cnt desc LIMIT 10").show
-spark.sql("select url,count(*) as req_cnt from nasa_log where url like '%/KSC.HTML%' group by url").show
+
+//spark.sql("select url,count(*) as req_cnt from nasa_log where url like '%/KSC.HTML%' group by url").show
+
+println("Problem 2:Top five-time frame for high traffic,which day of the week or hour of the day receives peak traffic:")
 spark.sql("select substr(timeStamp,1,14),count(*) as req_cnt from nasa_log group by substr(timeStamp,1,14) order by req_cnt desc LIMIT 5").show
+
+println("Problem 3:Top 5 time frames of least traffic (which day of the week or hour of the day receives least traffic:")
 spark.sql("select substr(timeStamp,1,14),count(*) as req_cnt from nasa_log group by substr(timeStamp,1,14) order by req_cnt asc LIMIT 5").show
-spark.sql("select httpCode,count(*) as req_cnt from nasa_log group by httpCode ").show
+
+println("Problem 4:unique HTTP codes returned by the server along with count:")
+spark.sql("select httpCode,count(*) as req_cnt from nasa_log group by httpCode order by req_cnt desc ").show
 
 
 
